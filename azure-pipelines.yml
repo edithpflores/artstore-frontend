@@ -1,0 +1,54 @@
+trigger:
+- main
+
+pool:
+  name: Default
+
+stages:
+
+- stage: BuildFrontend
+  displayName: Build Frontend
+
+  jobs:
+  - job: FrontendBuild
+
+    steps:
+
+    - task: UseNode@1
+      inputs:
+        version: '18.x'
+
+    - script: |
+        echo Frontend pipeline running
+        node -v
+      displayName: Verify Node
+
+- stage: DeployDev
+  displayName: Deploy Frontend Dev
+  dependsOn: BuildFrontend
+
+  jobs:
+  - deployment: DeployFrontendDev
+    environment: Dev
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploying Frontend to DEV
+            displayName: Deploy Frontend Dev
+
+- stage: DeployProd
+  displayName: Deploy Frontend Prod
+  dependsOn: DeployDev
+
+  jobs:
+  - deployment: DeployFrontendProd
+    environment: Prod
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploying Frontend to PROD
+            displayName: Deploy Frontend Prod
