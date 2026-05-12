@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: artstore-frontend
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: artstore-frontend
+
+  template:
+    metadata:
+      labels:
+        app: artstore-frontend
+
+    spec:
+      containers:
+      - name: frontend
+        image: edithfloresiteso/artstore-frontend
+        ports:
+        - containerPort: 80
