@@ -1,7 +1,6 @@
 async function loadProducts() {
 
-    const response = await fetch('http://localhost:3000/products');
-
+    const response = await fetch('http://127.0.0.1:61126/products');    
     const products = await response.json();
 
     const productsList = document.getElementById('products');
